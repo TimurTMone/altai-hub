@@ -42,7 +42,7 @@ export async function GET(request: Request) {
               marginBottom: 48,
             }}
           >
-            AltAI Hub
+            AltAI
           </div>
           <div
             style={{
@@ -55,9 +55,7 @@ export async function GET(request: Request) {
               maxWidth: 900,
             }}
           >
-            {t.hero.line1}
-            <br />
-            <span style={{ color: "#c4b5fd" }}>{t.hero.line2}</span>
+            {t.hero.headline}
           </div>
           <div
             style={{
