@@ -1,7 +1,49 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getLandingTranslations, type Locale } from "@/locales/landing";
 import { LanguageSwitcher } from "@/components/landing/LanguageSwitcher";
+
+const baseUrl =
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ lang?: string }>;
+}): Promise<Metadata> {
+  const { lang } = await searchParams;
+  const locale: Locale =
+    lang === "ru" || lang === "ky" || lang === "en" ? lang : "en";
+  const t = getLandingTranslations(locale);
+  const canonical = lang ? `/?lang=${lang}` : "/";
+  const ogImageUrl = `${baseUrl}/api/og?lang=${locale}`;
+  return {
+    title: t.meta.title,
+    description: t.meta.description,
+    openGraph: {
+      title: t.meta.title,
+      description: t.meta.description,
+      url: `${baseUrl}${canonical}`,
+      siteName: "AltAI Hub",
+      locale:
+        locale === "en" ? "en_US" : locale === "ru" ? "ru_RU" : "ky_KG",
+      images: [
+        { url: ogImageUrl, width: 1200, height: 630, alt: t.meta.title },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.meta.title,
+      description: t.meta.description,
+      images: [ogImageUrl],
+    },
+    alternates: { canonical: `${baseUrl}${canonical}` },
+  };
+}
 
 export default async function LandingPage({
   searchParams,
