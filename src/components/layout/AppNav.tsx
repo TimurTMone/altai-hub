@@ -1,24 +1,40 @@
 import Link from "next/link";
 import { SignOutButton } from "./SignOutButton";
 
+const navLinks = [
+  { href: "/dashboard", label: "Home" },
+  { href: "/journeys", label: "Journeys" },
+  { href: "/ranks", label: "Rankings" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/profile", label: "Profile" },
+];
+
 export function AppNav() {
   return (
-    <nav className="flex items-center gap-6 border-b border-neutral-200 dark:border-neutral-800 px-6 py-4">
-      <Link href="/" className="font-semibold">
-        AltAI Hub
-      </Link>
-      <Link href="/journeys" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
-        Journeys
-      </Link>
-      <Link href="/dashboard" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
-        Dashboard
-      </Link>
-      <Link href="/admin" className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
-        Admin
-      </Link>
-      <div className="ml-auto flex gap-4">
-        <SignOutButton />
-      </div>
-    </nav>
+    <header className="sticky top-0 z-40 border-b border-border bg-[#1a1a1a]">
+      <nav className="flex items-center justify-between gap-6 px-4 py-3 md:px-6 md:py-4">
+        <Link href="/dashboard" className="font-bold text-neutral-100 shrink-0">
+          AltAI Hub
+        </Link>
+        <div className="flex items-center gap-1 overflow-x-auto">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="whitespace-nowrap px-3 py-2 text-sm text-neutral-400 hover:text-neutral-100 transition"
+            >
+              {label}
+            </Link>
+          ))}
+          <Link
+            href="/admin"
+            className="whitespace-nowrap px-3 py-2 text-sm text-neutral-500 hover:text-neutral-200 transition"
+          >
+            Admin
+          </Link>
+          <SignOutButton />
+        </div>
+      </nav>
+    </header>
   );
 }
